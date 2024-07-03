@@ -23,5 +23,10 @@ left join
     sessions as s
     on tab.visitor_id = s.visitor_id and tab.max_date = s.visit_date
 left join leads as l on tab.visitor_id = l.visitor_id
-order by 8 desc nulls last, 2, 3, 4, 5
+order by
+    l.amount desc nulls last,
+    tab.max_date asc,
+    s.source asc,
+    s.medium asc,
+    s.campaign asc
 limit 10;

@@ -10,11 +10,11 @@ with last_paid_click as (
 
 leads_tab as (
     select
-        date(lpc.max_date) as visit_date,
-        count(distinct lpc.visitor_id) as visitors_count,
         s."source" as utm_source,
         s.medium as utm_medium,
         s.campaign as utm_campaign,
+        date(lpc.max_date) as visit_date,
+        count(distinct lpc.visitor_id) as visitors_count,
         count(l.lead_id) as leads_count,
         count(
             case
@@ -32,7 +32,7 @@ leads_tab as (
     left join
         leads as l
         on lpc.visitor_id = l.visitor_id and s.visit_date <= l.created_at
-    group by 1, 3, 4, 5
+    group by date(lpc.max_date), s."source", s.medium, s.campaign
 ),
 
 ads_tab as (
@@ -43,7 +43,7 @@ ads_tab as (
         utm_campaign,
         sum(daily_spent) as total_cost
     from ya_ads
-    group by 1, 2, 3, 4
+    group by date(campaign_date), utm_source, utm_medium, utm_campaign
     union all
     select
         date(campaign_date) as visit_date,
@@ -52,20 +52,20 @@ ads_tab as (
         utm_campaign,
         sum(daily_spent) as total_cost
     from vk_ads
-    group by 1, 2, 3, 4
+    group by date(campaign_date), utm_source, utm_medium, utm_campaign
 ),
 
 lpc_tab as (
     select
         lt.visit_date,
         lt.visitors_count,
-        lower(lt.utm_source) as utm_source,
-        lower(lt.utm_medium) as utm_medium,
-        lower(lt.utm_campaign) as utm_campaign,
         ads.total_cost,
         lt.leads_count,
         lt.purchases_count,
-        lt.revenue
+        lt.revenue,
+        lower(lt.utm_source) as utm_source,
+        lower(lt.utm_medium) as utm_medium,
+        lower(lt.utm_campaign) as utm_campaign
     from leads_tab as lt
     left join ads_tab as ads
         on
@@ -73,30 +73,16 @@ lpc_tab as (
             and lower(lt.utm_source) = ads.utm_source
             and lower(lt.utm_medium) = ads.utm_medium
             and lower(lt.utm_campaign) = ads.utm_campaign
-    order by 9 desc nulls last, 1, 2 desc, 3, 4
 )
-
 
 select
     utm_source,
     sum(visitors_count) / (select sum(visitors_count) from lpc_tab
     ) * 100.0 as visitors_percent
 from lpc_tab
-group by utm_source
-order by 2 desc;
+group by utm_source;
 
 --расчет из каких в общем источников приходят посетители
-select
-    "source",
-    medium,
-    count(distinct visitor_id)::numeric
-    / (select count(distinct visitor_id) from sessions
-    )::numeric * 100 as visitors_percent
-from sessions
-group by "source", medium
-order by 3 desc;
-
---расчет cpu, cpl, cppu, roi
 with last_paid_click as (
     select
         s.visitor_id,
@@ -108,11 +94,11 @@ with last_paid_click as (
 
 leads_tab as (
     select
-        date(lpc.max_date) as visit_date,
-        count(distinct lpc.visitor_id) as visitors_count,
         s."source" as utm_source,
         s.medium as utm_medium,
         s.campaign as utm_campaign,
+        date(lpc.max_date) as visit_date,
+        count(distinct lpc.visitor_id) as visitors_count,
         count(l.lead_id) as leads_count,
         count(
             case
@@ -130,7 +116,7 @@ leads_tab as (
     left join
         leads as l
         on lpc.visitor_id = l.visitor_id and s.visit_date <= l.created_at
-    group by 1, 3, 4, 5
+    group by date(lpc.max_date), s."source", s.medium, s.campaign
 ),
 
 ads_tab as (
@@ -141,7 +127,7 @@ ads_tab as (
         utm_campaign,
         sum(daily_spent) as total_cost
     from ya_ads
-    group by 1, 2, 3, 4
+    group by date(campaign_date), utm_source, utm_medium, utm_campaign
     union all
     select
         date(campaign_date) as visit_date,
@@ -150,19 +136,19 @@ ads_tab as (
         utm_campaign,
         sum(daily_spent) as total_cost
     from vk_ads
-    group by 1, 2, 3, 4
+    group by date(campaign_date), utm_source, utm_medium, utm_campaign
 )
 
 select
     lt.visit_date,
-    lower(lt.utm_source) as utm_source,
-    lower(lt.utm_medium) as utm_medium,
-    lower(lt.utm_campaign) as utm_campaign,
     ads.total_cost,
     lt.visitors_count,
     lt.leads_count,
     lt.purchases_count,
     lt.revenue,
+    lower(lt.utm_source) as utm_source,
+    lower(lt.utm_medium) as utm_medium,
+    lower(lt.utm_campaign) as utm_campaign,
     case
         when lt.visitors_count = 0 or ads.total_cost is null then 0
         else ads.total_cost / lt.visitors_count
@@ -186,7 +172,13 @@ left join ads_tab as ads
         and lower(lt.utm_source) = ads.utm_source
         and lower(lt.utm_medium) = ads.utm_medium
         and lower(lt.utm_campaign) = ads.utm_campaign
-order by 9 desc nulls last, 1, 5 desc, 2, 3, 4;
+order by
+    lt.revenue desc nulls last,
+    lt.visit_date asc,
+    lt.visitors_count desc,
+    lower(lt.utm_source),
+    lower(lt.utm_medium);
+
 
 
 -- расчет cpu, cpl, cppu и roi в общем для рекламных кампаний
@@ -201,11 +193,11 @@ with last_paid_click as (
 
 leads_tab as (
     select
-        date(lpc.max_date) as visit_date,
-        count(distinct lpc.visitor_id) as visitors_count,
         s."source" as utm_source,
         s.medium as utm_medium,
         s.campaign as utm_campaign,
+        date(lpc.max_date) as visit_date,
+        count(distinct lpc.visitor_id) as visitors_count,
         count(l.lead_id) as leads_count,
         count(
             case
@@ -223,7 +215,7 @@ leads_tab as (
     left join
         leads as l
         on lpc.visitor_id = l.visitor_id and s.visit_date <= l.created_at
-    group by 1, 3, 4, 5
+    group by date(lpc.max_date), s."source", s.medium, s.campaign
 ),
 
 ads_tab as (
@@ -234,7 +226,7 @@ ads_tab as (
         utm_campaign,
         sum(daily_spent) as total_cost
     from ya_ads
-    group by 1, 2, 3, 4
+    group by date(campaign_date), utm_source, utm_medium, utm_campaign
     union all
     select
         date(campaign_date) as visit_date,
@@ -243,7 +235,7 @@ ads_tab as (
         utm_campaign,
         sum(daily_spent) as total_cost
     from vk_ads
-    group by 1, 2, 3, 4
+    group by date(campaign_date), utm_source, utm_medium, utm_campaign
 )
 
 select
@@ -263,14 +255,3 @@ left join ads_tab as ads
         and lower(lt.utm_campaign) = ads.utm_campaign
 where lt.utm_source = 'yandex' or lt.utm_source = 'vk'
 group by lt.utm_source;
-
-
-
-
-
-
-
-
-	
-
-
