@@ -1,16 +1,16 @@
-"visit_date","utm_source","utm_medium","utm_campaign","visitors_count","total_cost","purchases_count","leads_count","revenue"
-2023-06-01 10:40:28.000,yandex,cpc,prof-frontend,1158,637843,1158,1158,275592420
-2023-06-01 17:47:00.000,yandex,cpc,prof-frontend,1158,637843,1158,1158,131463108
-2023-06-01 19:39:00.000,yandex,cpc,prof-frontend,220,121756,220,220,36877500
-2023-06-01 14:22:00.000,yandex,cpc,prof-java,435,237694,435,435,34859160
-2023-06-01 15:46:00.000,yandex,cpc,prof-data-analytics,230,131902,230,230,33176120
-2023-06-01 08:35:00.000,yandex,cpc,prof-java,435,237694,435,435,27557250
-2023-06-01 19:27:00.000,yandex,cpc,freemium,111,62645,111,111,12892800
-2023-06-01 13:11:00.000,yandex,cpc,prof-python,169,96158,169,169,10157238
-2023-06-01 10:44:00.000,yandex,cpc,freemium,48,23556,48,48,9071568
-2023-06-01 17:28:00.000,yandex,cpc,prof-professions-brand,113,66039,113,113,8944515
-2023-06-01 14:57:00.000,yandex,cpc,prof-frontend,46,25884,46,46,8294076
-2023-06-01 10:54:00.000,yandex,cpc,freemium,60,29803,60,60,8046000
-2023-06-01 08:33:02.000,yandex,cpc,prof-python,55,33109,55,55,7375500
-2023-06-01 04:58:00.000,vk,cpc,freemium-frontend,38,8442,38,38,7189980
-2023-06-01 18:42:00.000,yandex,cpc,prof-python,55,33120,55,55,6929725
+"visit_date","visitors_count","utm_source","utm_medium","utm_campaign","total_cost","leads_count","purchases_count","revenue"
+2023-06-01,103,yandex,cpc,freemium,21654,100,25,1654810
+2023-06-01,78,yandex,cpc,prof-frontend,57138,73,12,1057000
+2023-06-01,62,yandex,cpc,prof-python,33026,61,7,613196
+2023-06-01,31,yandex,cpc,base-python,12524,28,7,476021
+2023-06-01,71,vk,cpc,prof-python,2028,40,5,355564
+2023-06-01,80,vk,cpc,freemium-frontend,3160,43,5,338083
+2023-06-01,49,yandex,cpc,prof-java,29490,49,4,284590
+2023-06-01,40,yandex,cpc,base-frontend,18061,39,3,268515
+2023-06-01,51,vk,cpc,prof-java,3115,23,2,232726
+2023-06-01,14,yandex,cpc,prof-data-analytics,10086,14,2,220264
+2023-06-01,13,yandex,cpc,prof-professions-brand,4818,13,3,154287
+2023-06-20,3,telegram,cpp,base-java,,1,1,151192
+2023-06-01,4,yandex,cpc,dod-php,5964,4,1,150255
+2023-06-01,4,yandex,cpc,base-professions-retarget,151,4,1,134100
+2023-06-07,3,vk,social,hexlet-blog,,1,1,84000
