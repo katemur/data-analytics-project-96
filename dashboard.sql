@@ -327,6 +327,7 @@ left join ads_tab as ads
         and lower(lt.utm_campaign) = ads.utm_campaign
 
 -- расчет корреляции между запуском рекламы и ростом органики
+
 with org as (
     select
         date(visit_date) as visit_date,
