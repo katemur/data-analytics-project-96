@@ -324,7 +324,7 @@ left join ads_tab as ads
         lt.visit_date = ads.visit_date
         and lower(lt.utm_source) = ads.utm_source
         and lower(lt.utm_medium) = ads.utm_medium
-        and lower(lt.utm_campaign) = ads.utm_campaign
+        and lower(lt.utm_campaign) = ads.utm_campaign;
 
 -- расчет корреляции между запуском рекламы и ростом органики
 
@@ -353,4 +353,4 @@ from
         org.organic,
         adv.ads
     from org
-    inner join adv on org.visit_date = adv.visit_date) as org_and_adv
+    inner join adv on org.visit_date = adv.visit_date) as org_and_adv;
